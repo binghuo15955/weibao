@@ -1,0 +1,43 @@
+.layui-icon-star{ font-size:16px;  color:#ccc; cursor:pointer;} /*鍘熷鏍峰紡*/
+.layui-icon-star-fill{color:#FAD42E;}/*鐐瑰嚮鍚庡嚭鐜版牱寮�*/
+
+/* .layui-icon-praise{ font-size:16px;  color:#ccc; cursor:pointer;}
+.layui-icon .layui-icon-praise .cs{color:#FF0000;}鐐瑰嚮鍚庡嚭鐜版牱寮� */
+
+
+.layui-icon-reply-fill{ font-size:16px;  color:#ccc; cursor:pointer;}
+
+.demo-class .layui-layer-btn0{
+	color: white;
+}
+
+/* comment.html */
+#comment{
+	    margin-left: 13px;
+	    margin-top: 8px;
+}
+
+.comment{
+	margin: 11px;
+}
+
+.comment-container{
+	border: 1px solid #dee2e6!important;margin-top: 20px;
+}
+
+.comment-user{
+	font-size: x-large;color: #25262A;
+}
+
+.comment-content{
+	color: #000000;
+}
+
+/* index.html */
+.dropdown-menu a{
+	color: #000000;
+}
+
+.site-blocks-2 .block-2-item .text h3{
+	font-size: 31px;
+	}

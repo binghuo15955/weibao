@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yt.mapper.Browsing_historyMapper">
+	<resultMap id="BaseResultMap"
+		type="com.yt.entity.Browsing_history">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="uid" jdbcType="INTEGER" property="uid" />
+		<result column="pid" jdbcType="INTEGER" property="pid" />
+		<result column="seller_id" jdbcType="INTEGER"
+			property="seller_id" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="price" jdbcType="VARCHAR" property="price" />
+		<result column="picurl" jdbcType="VARCHAR" property="picurl" />
+		<result column="time" jdbcType="TIMESTAMP" property="time" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, uid, pid, seller_id, name, price, picurl, time
+	</sql>
+	<sql id="MAXtime_Column_List">
+		id, uid, pid, seller_id, name, price, picurl, MAX(time) time
+	</sql>
+	<select id="countByMany" resultType="Integer">
+		select
+		count(*)
+		from browsing_history
+		where 1=1
+		<if test="name!=null and name!=''">
+			and name LIKE '%${name}%'
+		</if>
+		<if test="start_time!=null">
+			and start_time &gt; '${start_time}'
+		</if>
+		<if test="end_time!=null">
+			and end_time &lt; '${end_time}'
+		</if>
+	</select>
+	<select id="selectByMany" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from browsing_history
+		where 1=1
+		<if test="name!=null and name!=''">
+			and name LIKE '%${name}%'
+		</if>
+		<if test="start_time!=null">
+			and start_time &gt; '${start_time}'
+		</if>
+		<if test="end_time!=null">
+			and end_time &lt; '${end_time}'
+		</if>
+		order by time desc
+		limit ${page},${limit}
+	</select>
+	<select id="countByUid" resultType="Integer">
+		select
+		count(*)
+		from browsing_history
+		where uid=${uid}
+	</select>
+	<select id="selectByUid" resultMap="BaseResultMap">
+		select
+		<include refid="MAXtime_Column_List" />
+		from browsing_history
+		where uid=${uid}
+		 group by pid
+		order by time desc
+		limit ${page},${limit}
+	</select>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from browsing_history
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from browsing_history
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.yt.entity.Browsing_history">
+		insert into browsing_history (id, uid, pid,
+		seller_id, name, price,
+		picurl, time)
+		values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER},
+		#{pid,jdbcType=INTEGER},
+		#{seller_id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{price,jdbcType=VARCHAR},
+		#{picurl,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.yt.entity.Browsing_history">
+		insert into browsing_history
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="uid != null">
+				uid,
+			</if>
+			<if test="pid != null">
+				pid,
+			</if>
+			<if test="seller_id != null">
+				seller_id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="picurl != null">
+				picurl,
+			</if>
+			<if test="time != null">
+				time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="uid != null">
+				#{uid,jdbcType=INTEGER},
+			</if>
+			<if test="pid != null">
+				#{pid,jdbcType=INTEGER},
+			</if>
+			<if test="seller_id != null">
+				#{seller_id,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="price != null">
+				#{price,jdbcType=VARCHAR},
+			</if>
+			<if test="picurl != null">
+				#{picurl,jdbcType=VARCHAR},
+			</if>
+			<if test="time != null">
+				#{time,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+		on duplicate key update
+		seller_id=#{seller_id},name=#{name},price=#{price},picurl=#{picurl},time=#{time}
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.yt.entity.Browsing_history">
+		update browsing_history
+		<set>
+			<if test="uid != null">
+				uid = #{uid,jdbcType=INTEGER},
+			</if>
+			<if test="pid != null">
+				pid = #{pid,jdbcType=INTEGER},
+			</if>
+			<if test="seller_id != null">
+				seller_id = #{seller_id,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="price != null">
+				price = #{price,jdbcType=VARCHAR},
+			</if>
+			<if test="picurl != null">
+				picurl = #{picurl,jdbcType=VARCHAR},
+			</if>
+			<if test="time != null">
+				time = #{time,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.yt.entity.Browsing_history">
+		update browsing_history
+		set uid = #{uid,jdbcType=INTEGER},
+		pid = #{pid,jdbcType=INTEGER},
+		seller_id = #{seller_id,jdbcType=INTEGER},
+		name = #{name,jdbcType=VARCHAR},
+		price = #{price,jdbcType=VARCHAR},
+		picurl = #{picurl,jdbcType=VARCHAR},
+		time = #{time,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

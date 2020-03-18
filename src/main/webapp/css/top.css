@@ -1,0 +1,17 @@
+@charset "UTF-8";
+.top_e {
+	position: fixed;
+	right: 10px;
+	bottom: 40px;
+	background: rgba(204, 200, 255, 0.6);
+	border-radius: 15px;
+	cursor: pointer;
+	display: none;
+	width: 60px;
+	height: 60px;
+}
+
+.top_e:hover {
+	color: white;
+	background: #1296DB;
+}

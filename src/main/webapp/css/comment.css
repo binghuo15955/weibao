@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+#comment {
+	margin-top: 16px;
+	margin-left: 17px;
+	margin-top: 16px;
+	margin-left: 17px;
+	padding-left: 10px;
+	padding-top: 10px;
+	font-size: 20px;
+	width: 953px;
+	height: 170px;
+}
+
+button {
+	width: 137px;
+	float: right;
+	margin-right: 20px;
+	margin-top: 6px;
+	margin-right:10px;
+}

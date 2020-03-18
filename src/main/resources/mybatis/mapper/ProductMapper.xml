@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yt.mapper.ProductMapper">
+  <resultMap id="BaseResultMap" type="com.yt.entity.Product">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="u_name" jdbcType="VARCHAR" property="u_name" />
+    <result column="u_sex" jdbcType="VARCHAR" property="u_sex" />
+    <result column="u_credit" jdbcType="VARCHAR" property="u_credit" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="origin_price" jdbcType="VARCHAR" property="origin_price" />
+    <result column="current_price" jdbcType="VARCHAR" property="current_price" />
+    <result column="quality" jdbcType="VARCHAR" property="quality" />
+    <result column="place" jdbcType="VARCHAR" property="place" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="delivery" jdbcType="VARCHAR" property="delivery" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="edit_time" jdbcType="DATE" property="edit_time" />
+    <result column="count" jdbcType="VARCHAR" property="count" />
+    <result column="lat" jdbcType="VARCHAR" property="lat" />
+    <result column="lon" jdbcType="VARCHAR" property="lon" />
+  </resultMap>
+  <resultMap type="com.yt.entity.CategoryCount" id="CategoryCountMap">
+  	<result column="category" jdbcType="VARCHAR" property="category" />
+  	<result column="count" jdbcType="VARCHAR" property="count" />
+  </resultMap>
+  <resultMap id="BaseResultMapWithPic" type="com.yt.entity.Product">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="u_name" jdbcType="VARCHAR" property="u_name" />
+    <result column="u_sex" jdbcType="VARCHAR" property="u_sex" />
+    <result column="u_credit" jdbcType="VARCHAR" property="u_credit" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="origin_price" jdbcType="VARCHAR" property="origin_price" />
+    <result column="current_price" jdbcType="VARCHAR" property="current_price" />
+    <result column="quality" jdbcType="VARCHAR" property="quality" />
+    <result column="place" jdbcType="VARCHAR" property="place" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="delivery" jdbcType="VARCHAR" property="delivery" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="edit_time" jdbcType="DATE" property="edit_time" />
+    <result column="count" jdbcType="VARCHAR" property="count" />
+    <result column="lat" jdbcType="VARCHAR" property="lat" />
+    <result column="lon" jdbcType="VARCHAR" property="lon" />
+    <association property="pictureSet" javaType="Picture">
+    	<result property="id" column="pic_id" />
+    	<result property="pid" column="pid" />
+    	<result property="picurl" column="picurl" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    product.id, uid, u_name, u_sex, u_credit, name, category, origin_price, current_price, quality, 
+    place, telephone, delivery, description, edit_time, count, lat, lon
+  </sql>
+  <select id="selectAllorderByCount" resultType="String">
+  	SELECT
+		`name` FROM product WHERE
+		DATE_SUB(CURDATE(), INTERVAL 7 DAY) <![CDATA[ <= ]]> date(edit_time) order by count+1 desc limit 0,5
+  </select>
+  <select id="countAllScan" resultType="Integer">
+  	select SUM(count) from product
+  </select>
+  <select id="selectAll" resultMap="BaseResultMapWithPic">
+  	select
+  	<include refid="Base_Column_List" />, pic_id,pid,picurl
+  	from product left join  
+  	(select MAX(picture.id) pic_id,pid,picurl from picture group by pid)picture
+  	on product.id=picture.pid
+  	limit ${page},${limit}
+  </select>
+  <select id="countAll" resultType="Integer">
+  	select
+  	count(*)
+  	from product
+  </select>
+  <update id="addLookCount">
+  	update 
+  	product 
+  	<set>
+  		count=count+1
+  	</set>
+  	where id=${id}
+  </update>
+  <update id="updateQuantityByPrimaryKey">
+  	update 
+  	product
+  	<set>
+  		quality=quality-${quantity}
+  	</set>
+  	where id=${id}
+  </update>
+  	<select id="selectAllorderByTime" resultMap="BaseResultMapWithPic">
+  		select
+  	<include refid="Base_Column_List" />,picture.id pic_id,pid,picurl
+  	from product left join picture
+  	on product.id=picture.pid
+  	order by edit_time desc,id desc
+  	limit 0,20
+  	</select>
+   <select id="selectByUserIdWithPics" resultMap="BaseResultMapWithPic">
+  	select
+  	<include refid="Base_Column_List" />,picture.id pic_id,pid,picurl
+  	from product left join picture
+  	on product.id=picture.pid
+  	where product.uid=${uid}
+  </select>
+  
+  <!-- 获取各分类的数量 -->
+  <select id="countByName" resultType="INTEGER">
+  	select 
+  	count(*)
+  	from product
+  	where 1=1
+  	<if test="name!=null and name">
+  		and name LIKE '%${name}%'
+  	</if>
+  </select>
+  
+  <!-- 通过产品名字搜索 -->
+  <select id="selectByName" resultMap="BaseResultMapWithPic">
+  	select
+  	<include refid="Base_Column_List" />,picture.id pic_id,pid,picurl
+  	from product left join (select MAX(id) as id,pid,picurl from picture group by pid) picture
+  	on product.id=picture.pid
+  	where 1=1
+  	<if test="name!=null and name!=''">
+  		and name LIKE '%${name}%'
+  	</if>
+  	limit ${page},${limit}
+  </select>
+  
+  <!-- 计算各类产品总数 -->
+  <select id="countCategory" resultMap="CategoryCountMap">
+  	select
+  	category,count(*) count
+  	from product
+  	group by
+  	category
+  </select>
+  
+  <!-- 条件查询+排序 -->  
+  <select id="selectByCondition" resultMap="BaseResultMapWithPic">
+  	select 
+  	<include refid="Base_Column_List" />,picture.id pic_id,pid,picurl
+  	from product left join (select MAX(id) as id,pid,picurl from picture group by pid) picture
+  	on product.id=picture.pid
+  	where 1=1
+	<if test="key !=null and key !='' and key=='category'">
+		and category='${value}'
+	</if>
+	<if test="key != null and key != '' and key=='name'">
+		and name LIKE '%${value}%'
+	</if>
+  	<if test="(condition != null and condition != '') or (price !=null and price !='')">
+  		order by
+  	</if>
+  	<if test="condition != null and condition !=''">
+  		<if test="condition == 'count'">
+  			 count+0 desc
+  		</if>
+  		<if test="condition == 'credit'">
+  			u_credit+0 desc
+  		</if>
+  		<if test="price != '' and price != null">
+  			,
+  			<if test="price=='up'">
+  				current_price+0 asc
+  			</if>
+  			<if test="price=='down'">
+  				current_price+0 desc
+  			</if>
+  		</if>
+  	</if>
+  	<if test="!(condition != null and condition !='') and price != '' and price != null">
+  		<if test="price=='up'">
+			current_price+0 asc
+		</if>
+		<if test="price=='down'">
+			current_price+0 desc
+		</if>
+  	</if>
+  	limit ${page},${limit}
+  </select>
+  <select id="countByCondition" resultType="Integer">
+	select 
+  	count(*)
+  	from product
+  	where 1=1
+	<if test="key !=null and key !='' and key=='category'">
+		and category='${value}'
+	</if>
+	<if test="key != null and key != '' and key=='name'">
+		and name LIKE '%${value}%'
+	</if>
+  </select>
+  
+  <!-- 按照分类进行查询 -->
+  <select id="selectbyCategory" resultMap="BaseResultMapWithPic">
+  	select 
+  	<include refid="Base_Column_List" />,picture.id pic_id,pid,picurl
+  	from product left join (select MIN(id) as id,pid,picurl from picture group by pid) picture
+  	on product.id=picture.pid
+  	where 1=1
+  	<if test="category !=null and category!='' ">
+  		and category='${category}'		
+  	</if>
+  	limit ${page},${limit}
+  </select>
+  <select id="countbyCategory" resultType="Integer">
+  	select 
+    count(*)
+    from product
+    where 1=1
+    <if test="category !=null and category!='' ">
+  		and category='${category}'		
+  	</if>
+  </select>
+  <select id="countByMany" resultType="Integer">
+  	select 
+    count(*)
+    from product
+    where 1=1 and uid=${uid}
+    	and name LIKE '%${name}%'
+    	and category like '%${category}%'
+    <if test="start_time!=null and start_time!=''">
+    	and edit_time  &gt; '${start_time}'
+    </if>	
+    <if test="end_time!=null and end_time!=''">
+    	and edit_time &lt; '${end_time}'
+    </if>
+  </select>
+  <select id="selectByMany" resultMap="BaseResultMapWithPic">
+    select 
+    <include refid="Base_Column_List" />,picture.id pic_id,pid,picurl
+  	from product left join (select MAX(id) as id,pid,picurl from picture group by pid) picture
+  	on product.id=picture.pid
+    where 1=1 
+    <if test="uid!=8">
+   		and uid=${uid}
+    </if>
+    	and name LIKE '%${name}%'
+    	and category LIKE '%${category}%'
+    <if test="start_time!=null and start_time!=''">
+    	and edit_time &gt; '${start_time}'
+    </if>	
+    <if test="end_time!=null and end_time!=''">
+    	and edit_time &lt; '${end_time}'
+    </if>
+    limit ${page},${limit}		
+  </select>
+  <select id="countByUserId" parameterType="java.lang.Integer" resultType="Integer">
+    select 
+    count(*)
+    from product
+    where uid = ${uid}
+  </select>
+  <select id="selectByUserIdWithPics_Pages" parameterType="java.lang.Integer" resultMap="BaseResultMapWithPic">
+  	select
+  	<include refid="Base_Column_List" />,picture.id pic_id,pid,picurl
+  	from product left join picture
+  	on product.id=picture.pid
+  	where product.uid=${uid}
+  	group by id
+    limit ${page},${limit}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from product
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from product
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yt.entity.Product">
+  	<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">  
+        SELECT LAST_INSERT_ID()  
+    </selectKey>
+    insert into product (id, uid, u_name, 
+      u_sex, u_credit, name, 
+      category, origin_price, current_price, 
+      quality, place, telephone, 
+      delivery, description, edit_time, 
+      count, lat, lon)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{u_name,jdbcType=VARCHAR}, 
+      #{u_sex,jdbcType=VARCHAR}, #{u_credit,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{category,jdbcType=VARCHAR}, #{origin_price,jdbcType=VARCHAR}, #{current_price,jdbcType=VARCHAR}, 
+      #{quality,jdbcType=VARCHAR}, #{place,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
+      #{delivery,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{edit_time,jdbcType=DATE}, 
+      #{count,jdbcType=VARCHAR}, #{lat,jdbcType=VARCHAR}, #{lon,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yt.entity.Product">
+    insert into product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="u_name != null">
+        u_name,
+      </if>
+      <if test="u_sex != null">
+        u_sex,
+      </if>
+      <if test="u_credit != null">
+        u_credit,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="category != null">
+        category,
+      </if>
+      <if test="origin_price != null">
+        origin_price,
+      </if>
+      <if test="current_price != null">
+        current_price,
+      </if>
+      <if test="quality != null">
+        quality,
+      </if>
+      <if test="place != null">
+        place,
+      </if>
+      <if test="telephone != null">
+        telephone,
+      </if>
+      <if test="delivery != null">
+        delivery,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="edit_time != null">
+        edit_time,
+      </if>
+      <if test="count != null">
+        count,
+      </if>
+      <if test="lat != null">
+        lat,
+      </if>
+      <if test="lon != null">
+        lon,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="u_name != null">
+        #{u_name,jdbcType=VARCHAR},
+      </if>
+      <if test="u_sex != null">
+        #{u_sex,jdbcType=VARCHAR},
+      </if>
+      <if test="u_credit != null">
+        #{u_credit,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+        #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="origin_price != null">
+        #{origin_price,jdbcType=VARCHAR},
+      </if>
+      <if test="current_price != null">
+        #{current_price,jdbcType=VARCHAR},
+      </if>
+      <if test="quality != null">
+        #{quality,jdbcType=VARCHAR},
+      </if>
+      <if test="place != null">
+        #{place,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="delivery != null">
+        #{delivery,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="edit_time != null">
+        #{edit_time,jdbcType=DATE},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null">
+        #{lat,jdbcType=VARCHAR},
+      </if>
+      <if test="lon != null">
+        #{lon,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yt.entity.Product">
+    update product
+    <set>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="u_name != null">
+        u_name = #{u_name,jdbcType=VARCHAR},
+      </if>
+      <if test="u_sex != null">
+        u_sex = #{u_sex,jdbcType=VARCHAR},
+      </if>
+      <if test="u_credit != null">
+        u_credit = #{u_credit,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+        category = #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="origin_price != null">
+        origin_price = #{origin_price,jdbcType=VARCHAR},
+      </if>
+      <if test="current_price != null">
+        current_price = #{current_price,jdbcType=VARCHAR},
+      </if>
+      <if test="quality != null">
+        quality = #{quality,jdbcType=VARCHAR},
+      </if>
+      <if test="place != null">
+        place = #{place,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="delivery != null">
+        delivery = #{delivery,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="edit_time != null">
+        edit_time = #{edit_time,jdbcType=DATE},
+      </if>
+      <if test="count != null">
+        count = #{count,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null">
+        lat = #{lat,jdbcType=VARCHAR},
+      </if>
+      <if test="lon != null">
+        lon = #{lon,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yt.entity.Product">
+    update product
+    set uid = #{uid,jdbcType=INTEGER},
+      u_name = #{u_name,jdbcType=VARCHAR},
+      u_sex = #{u_sex,jdbcType=VARCHAR},
+      u_credit = #{u_credit,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      category = #{category,jdbcType=VARCHAR},
+      origin_price = #{origin_price,jdbcType=VARCHAR},
+      current_price = #{current_price,jdbcType=VARCHAR},
+      quality = #{quality,jdbcType=VARCHAR},
+      place = #{place,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      delivery = #{delivery,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      edit_time = #{edit_time,jdbcType=DATE},
+      count = #{count,jdbcType=VARCHAR},
+      lat = #{lat,jdbcType=VARCHAR},
+      lon = #{lon,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

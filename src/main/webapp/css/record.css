@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+#pname_oid_search{
+    height: 35px;
+    font-size: 15px;
+    padding-left: 10px;
+}
+
+#pname_oid_search {
+	display: unset;
+	width: 442px;
+}
+
+input {
+	margin-left: 13px;
+}
+
+#extend_search {
+	margin-left: 50px;
+}
+

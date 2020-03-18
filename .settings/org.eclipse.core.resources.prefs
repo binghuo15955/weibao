@@ -1,0 +1,13 @@
+eclipse.preferences.version=1
+encoding//src/main/java/com/yt/controller/AccountController.java=UTF-8
+encoding//src/main/java/com/yt/controller/BlockChainController.java=UTF-8
+encoding//src/main/java/com/yt/entity/Constant.java=UTF-8
+encoding//src/main/java/com/yt/mapper/PictureMapper.java=UTF-8
+encoding//src/main/java/com/yt/mapper/ProductMapper.java=UTF-8
+encoding//src/main/java/com/yt/service/impl/AccountServiceImpl.java=UTF-8
+encoding//src/main/java/com/yt/service/impl/BlockChainServiceImpl.java=UTF-8
+encoding//src/main/java/com/yt/service/impl/OrderServiceImpl.java=UTF-8
+encoding//src/main/java/com/yt/service/impl/P2PServiceImpl.java=UTF-8
+encoding//src/main/java/com/yt/util/file.java=UTF-8
+encoding//src/main/java/com/yt/util/initWebSocketServer.java=UTF-8
+encoding//src/main/webapp/css/shop-single.css=UTF-8

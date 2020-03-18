@@ -1,0 +1,225 @@
+<!doctype html>
+<html class="x-admin-sm">
+<head>
+<meta charset="UTF-8">
+<title>变废为宝-WEIBAO！</title>
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="stylesheet" href="./css/font.css">
+<link rel="stylesheet" href="./css/login.css">
+<link rel="stylesheet" href="./css/xadmin.css">
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="./lib/layui/layui.js" charset="utf-8"></script>
+<style>
+span {
+	font-size: 14px;
+}
+</style>
+</head>
+<body class="login-bg">
+
+	<div class="login layui-anim layui-anim-up">
+		<div class="message">WEIBAO搜-->注册账号</div>
+		<div id="darkbannerwrap"></div>
+
+		<form method="post" class="layui-form">
+			<!-- <span>头像</span>&emsp;
+			<div class="layui-upload">
+				<button type="button" class="layui-btn" id="test1">上传图片</button>
+				<div class="layui-upload-list">
+					<img class="layui-upload-img" id="demo1">
+					<p id="demoText"></p>
+				</div>
+			</div>
+			<hr class="hr15"> -->
+			<span class="x-red">*</span><span>用户名</span>&emsp;<input name="username" placeholder="输入你的用户名" lay-verify="username"
+				type="text" class="layui-input" onblur="validate_duplicate(this)" style="display: unset; width: 76%;">
+				<p style="color:red">用户名不能纯数字、不能有个特殊字符</p>
+			
+			<hr class="hr15">
+			<span class="x-red">*</span><span>密码</span>&emsp;<input name="password" placeholder="输入你的密码"
+				type="password" class="layui-input" lay-verify="pass"
+				style="display: unset; width: 76%;">
+				<p style="color:red">密码必须6到12位，且不能出现空格</p>
+			<hr class="hr15">
+			<span class="x-red">*</span><span>昵称</span>&emsp;<input name="name" placeholder="输入你的昵称" lay-verify="name"
+				type="text" class="layui-input" onblur="validate_duplicate(this)" style="display: unset; width: 76%;">
+				<p style="color:red">昵称不能超过10个字符</p>
+			<hr class="hr15">
+			<span class="x-red">*</span><span>性别</span>&emsp; <input name="sex" type="radio"
+				class="layui-input" value="male" checked>男 <input name="sex"
+				type="radio" class="layui-input" value="female">女
+			<hr class="hr15">
+			<span class="x-red">*</span><span>邮箱地址</span>&emsp;<input name="email" placeholder="输入你的电子邮箱"
+				type="text" class="layui-input" onblur="validate_duplicate(this)" style="display: unset; width: 70%; " lay-verify="email">
+			<hr class="hr15">  
+			<span class="x-red">*</span><span>电话号码</span>&emsp;<input name="telephone" placeholder="输入你的电话号码"
+				type="text" class="layui-input" onblur="validate_duplicate(this)" style="display: unset; width: 70%;" lay-verify="phone">
+			<hr class="hr15">
+			<input value="注册" lay-submit lay-filter="register"
+				style="width: 100%;" type="submit">
+			<hr class="hr20">
+		</form>
+	</div>
+
+	<script>
+		function validate_duplicate(obj) {
+			//console.log(obj.name+":"+$(obj).val())
+			var value=$(obj).val();
+			var key =obj.name;
+			var object={key:obj.name,value:value};
+			var param = JSON.stringify(object);
+			console.log(param)
+			$.ajax({
+				url : "/weibao/account/duplicate",
+				type : "post",
+				data : {key:key,value:value},
+				async : false,
+				success : function(res) {
+					console.log("server返回值：" + res)
+					if (res == "success") {
+						if($('#validate'+key).length>0){//OK
+							$('#validate'+key).attr("class","layui-icon layui-icon-ok");
+							$('#validate'+key).attr("style","color: green;font-size: 21px;");
+						}else{
+							$(obj).after("<i id=\"validate"+key+"\" class=\"layui-icon layui-icon-ok\" style=\"color: green;font-size: 21px;\"></i>");
+						}
+						return true;
+					} else if(res=="failed"){
+						if($('#validate'+key).length>0){//元素存在
+							$('#validate'+key).attr("class","layui-icon layui-icon-close");
+							$('#validate'+key).attr("style","color: red;font-size: 21px;");
+						}else{
+							$(obj).after("<i id=\"validate"+key+"\" class=\"layui-icon layui-icon-close\" style=\"color: red;font-size: 21px;\"></i>");
+						}
+						return false;
+					}else{
+						layer.alert('系统错误！请检查网络链接或联系客服！！', {
+							icon : 5
+						});
+						return false;
+					}
+				},
+				error : function() {
+					layer.alert('系统错误！请检查网络链接或联系客服！！', {
+						icon : 5
+					});
+					return false;
+				}
+			})
+		}
+		
+		layui.use([ 'form', 'jquery' ], function() {
+			var form = layui.form, $ = layui.jquery;
+			//监听提交
+			form.on('submit(register)', function(data) {
+				var param = data.field;
+				console.log(JSON.stringify(param))
+				$.ajax({
+					url : "/weibao/account/add",
+					type : "post",
+					data : param,
+					async : false,
+					success : function(obj) {
+						if(obj=="success"){
+							console.log("server-->" + obj)
+							console.log("注册成功")
+							layer.msg('注册成功', {
+								icon : 1,
+								time : 1500
+							},
+									function() {
+										//关闭当前frame
+										parent.location.href = "index.jsp";
+										var index = parent.layer
+												.getFrameIndex(window.name);
+										//关闭当前frame
+										parent.layer.close(index)
+										return false;
+									});
+						}else{
+							console.log("server-->" + obj)
+							console.log("注册失败！请检查您的输入是否正确！")
+							layer.msg('注册失败', {
+								icon : 3,
+								time : 1000
+							})
+						}
+						
+					},
+					error : function() {
+						layer.alert('操作失败！！！', {
+							icon : 5
+						});
+					}
+				})
+				return false;
+			});
+			
+			
+			form.verify({
+				  username: function(value, item){ //value：表单的值、item：表单的DOM对象
+				    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+				      return '用户名不能有特殊字符';
+				    }
+				    if(/(^\_)|(\__)|(\_+$)/.test(value)){
+				      return '用户名首尾不能出现下划线\'_\'';
+				    }
+				    if(/^\d+\d+\d$/.test(value)){
+				      return '用户名不能全为数字';
+				    }
+				  }
+				  ,pass: [
+				    /^[\S]{6,12}$/
+				    ,'密码必须6到12位，且不能出现空格'
+				  ] 
+				  ,name:[/^[\S]{1,10}$/
+					    ,'名字不能为空且不超过10个字'
+					    ]
+				  
+				});      
+		});
+	</script>
+	<!-- 底部结束 -->
+</body>
+<!-- <script>
+		layui.use('upload', function() {
+			var $ = layui.jquery,
+				upload = layui.upload;
+
+			//普通图片上传
+			var uploadInst = upload.render({
+				elem: '#test1',
+				size:60,
+				url: 'https://httpbin.org/post' //改成您自己的上传接口
+					,
+				before: function(obj) {
+					//预读本地文件示例，不支持ie8
+					obj.preview(function(index, file, result) {
+						$('#demo1').attr('src', result); //图片链接（base64）
+						$('#demo1').attr('style', "width:100px;height:100px");
+					});
+				},
+				done: function(res) {
+					//如果上传失败
+					if (res.code > 0) {
+						return layer.msg('上传失败');
+					}
+					//上传成功
+				},
+				error: function() {
+					//演示失败状态，并实现重传
+					var demoText = $('#demoText');
+					demoText.html(
+						'<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+					demoText.find('.demo-reload').on('click', function() {
+						uploadInst.upload();
+					});
+				}
+			});
+		})
+	</script> -->
+</html>

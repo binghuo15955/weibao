@@ -1,0 +1,31 @@
+@charset "UTF-8";
+
+.layui-form-label .label-define {
+	height: 38px;
+	line-height: 36px;
+	font-size: 15px;
+	padding: unset;
+}
+
+body {
+	background: white;
+	padding: 17px;
+}
+
+input {
+	width: 264px;
+}
+
+#btn {
+	text-align: center;
+}
+
+#close-btn {
+	height: 45px;
+	width: 134px;
+	font-size: 16px;
+}
+
+.layui-col-md4 input {
+	width: 501px;
+}

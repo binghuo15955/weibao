@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yt.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.yt.entity.User">
+    <id column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="register_time" jdbcType="DATE" property="register_time" />
+    <result column="credit" jdbcType="VARCHAR" property="credit" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yt.entity.User">
+    <result column="image" jdbcType="LONGVARBINARY" property="image" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uid, username, password, name, sex, email, telephone, address, register_time, credit, 
+    status
+  </sql>
+  <sql id="Blob_Column_List">
+    image
+  </sql>
+  <select id="countByMany" resultType="Integer">
+  select
+  count(*)
+  	from user
+  	where 1=1
+  	<if test="name!=null and name !=''">
+  		and name LIKE '%${name}%'
+  	</if>
+  	<if test="username!=null and username !=''">
+  		and username = ${username}
+  	</if>
+  	<if test="start_time!=null">
+  		and register_time &gt; '${start_time}'
+  	</if>
+  	<if test="end_time!=null">
+  		and register_time &lt; '${end_time}'
+  	</if>
+  	<if test="email!=null and email !=''">
+  		and email =${email}
+  	</if>
+  	<if test="telephone !=null and telephone !=''">
+  		and telephone = ${telephone}
+  	</if>
+  	<if test="status !=null and status !=''">
+  		and status = ${status}
+  	</if>
+  </select>
+  <select id="selectByMany" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List"></include>
+  	from user
+  	where 1=1
+  	<if test="name!=null and name !=''">
+  		and name LIKE '%${name}%'
+  	</if>
+  	<if test="username!=null and username !=''">
+  		and username = '${username}'
+  	</if>
+  	<if test="start_time!=null and start_time!=''">
+  		and register_time &gt; '${start_time}'
+  	</if>
+  	<if test="end_time!=null and end_time!=''">
+  		and register_time &lt; '${end_time}'
+  	</if>
+  	<if test="email!=null and email !=''">
+  		and email = '${email}'
+  	</if>
+  	<if test="telephone !=null and telephone !=''">
+  		and telephone = '${telephone}'
+  	</if>
+  	<if test="status !=null and status !=''">
+  		and status = '${status}'
+  	</if>
+  	limit ${page},${limit}
+  </select>
+  <select id="countAll" resultType="Integer">
+  	select
+  	count(*)
+  	from user
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List"></include>
+  	from user
+  	limit ${page},${limit}
+  </select>
+  <select id="validate_Duplicate" parameterType="String" resultType="Integer">
+  	select 
+    count(*)
+    from user
+    where 1=1 
+    <if test="username != null and username!=''">and username = #{username}</if>
+    <if test="email != null and email!=''">and email = #{email}</if>
+    <if test="name != null and name!=''">and name = #{name}</if>
+    <if test="telephone != null and telephone!=''">and telephone = #{telephone}</if>
+  </select>
+  <select id="selectByUsername_password_status" parameterType="String" resultMap="BaseResultMap">
+ 	 select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from user
+    where username = #{username} and password = #{password} and status="3"
+  </select>
+  <select id="selectByUsername_password" parameterType="String" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from user
+    where username = #{username} and password = #{password}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from user
+    where uid = #{uid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
+    where uid = #{uid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yt.entity.User">
+   	<selectKey keyProperty="uid" order="AFTER" resultType="java.lang.Integer">  
+        SELECT LAST_INSERT_ID()  
+    </selectKey>
+    insert into user (uid, username, password, 
+      name, sex, email, telephone, 
+      address, register_time, credit, 
+      status, image)
+    values (#{uid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{register_time,jdbcType=DATE}, #{credit,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{image,jdbcType=LONGVARBINARY})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yt.entity.User">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="telephone != null">
+        telephone,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="register_time != null">
+        register_time,
+      </if>
+      <if test="credit != null">
+        credit,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="image != null">
+        image,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="register_time != null">
+        #{register_time,jdbcType=DATE},
+      </if>
+      <if test="credit != null">
+        #{credit,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <update id="edit_password" parameterType="String">
+  	update user
+  	<set>
+  		password="${new_pw}"
+  	</set>
+  	where username="${username}" and password="${old_pw}"
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yt.entity.User">
+    update user
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="register_time != null">
+        register_time = #{register_time,jdbcType=DATE},
+      </if>
+      <if test="credit != null">
+        credit = #{credit,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        image = #{image,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where uid = #{uid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yt.entity.User">
+    update user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      register_time = #{register_time,jdbcType=DATE},
+      credit = #{credit,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      image = #{image,jdbcType=LONGVARBINARY}
+    where uid = #{uid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yt.entity.User">
+    update user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      register_time = #{register_time,jdbcType=DATE},
+      credit = #{credit,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=INTEGER}
+  </update>
+</mapper>

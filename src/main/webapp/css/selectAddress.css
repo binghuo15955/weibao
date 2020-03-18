@@ -1,0 +1,6 @@
+@charset "UTF-8";
+
+.layui-table-cell{
+    height:36px;
+    line-height: 36px;
+}

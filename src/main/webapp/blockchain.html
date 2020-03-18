@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="./lib/layui/css/layui.css">
+		<script type="text/javascript" src="./js/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+		<style>
+			span{
+				border: #000000 1px solid;
+			}
+			label{
+				border: #000000 1px solid;
+			}
+		</style>
+	</head>
+	<body>
+		<div style="text-align: center;">
+			<h1>BLOCKCHAIN</h1>
+		</div>
+		<button>增加节点</button>
+
+		<div>
+			<h2>节点</h2>
+			<div>
+				<a href="javascript:(0)">MIKI</a><button>×</button>
+				<a href="javascript:(0)">TOM</a><button>×</button>
+				<a href="javascript:(0)">MIKE</a><button>×</button>
+			</div>
+		</div>
+		<br>
+		<div>
+			<form class="layui-form">
+				<label>DATA</label>
+				<input type="input" placeholder="输入你的data" id="data" name="data" />
+				<button type="submit" lay-submit>+增加新区块</button>
+			</form>
+		</div>
+		<hr>
+		<div id="myblockchain">
+			<div style="background: #D0E5F5;width: 700px;height: 250px;padding: 15px;margin: auto;">
+				<label>DATA</label>
+				<span>GENESIS BLOCK</span>
+				<p>
+					<label>PREVIOUS HASH</label>
+					<span>0</span>
+					<p>
+						<label>HASH</label>
+						<span>000dc75a315c77a1f9c98fb6247d03dd18ac52632d7dc6a9920261d8109b37cf</span>
+						<h1>GENESIS BLOCK</h1>
+						<label>604</label>
+			</div>
+		</div>
+	</body>
+	<script>
+	console.log("go")
+		layui.use(['layer','form'],function(){
+			var layer=layui.layer,form=layui.form;
+			
+			form.on('submit()',function(data){
+				var param = data.field;
+				console.log(param)
+				$.ajax({
+					url: "/weibao/blockchain/mineBlock",
+					type: "get",
+					async: false,
+					data: data,
+					success: function(res) {
+						console.log(res)
+					},
+					error: function(res) {
+						console.log(res)
+					}
+				
+				})
+			})
+		})
+		
+	</script>
+</html>

@@ -1,0 +1,18 @@
+#header {
+	font-size: 19px;
+	background: aliceblue;
+	padding: 6px;
+}
+
+.wider-input {
+	width: 591px;
+}
+
+form div {
+	margin-bottom: 14px;
+}
+
+#start {
+	margin-bottom: 0px;
+}
+

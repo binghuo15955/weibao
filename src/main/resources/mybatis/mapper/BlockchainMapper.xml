@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yt.mapper.BlockchainMapper">
+  <resultMap id="BaseResultMap" type="com.yt.entity.Blockchain">
+    <id column="oid" jdbcType="VARCHAR" property="oid" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="price" jdbcType="VARCHAR" property="price" />
+    <result column="quantity" jdbcType="VARCHAR" property="quantity" />
+    <result column="delivery" jdbcType="VARCHAR" property="delivery" />
+    <result column="total" jdbcType="VARCHAR" property="total" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="p_name" jdbcType="VARCHAR" property="p_name" />
+    <result column="p_pictrue" jdbcType="VARCHAR" property="p_pictrue" />
+    <result column="buyer_id" jdbcType="INTEGER" property="buyer_id" />
+    <result column="buyer_name" jdbcType="VARCHAR" property="buyer_name" />
+    <result column="seller_id" jdbcType="INTEGER" property="seller_id" />
+    <result column="seller_name" jdbcType="VARCHAR" property="seller_name" />
+    <result column="index" jdbcType="INTEGER" property="index" />
+    <result column="previousHash" jdbcType="VARCHAR" property="previousHash" />
+    <result column="timestamp" jdbcType="BIGINT" property="timestamp" />
+    <result column="data" jdbcType="VARCHAR" property="data" />
+    <result column="hash" jdbcType="VARCHAR" property="hash" />
+    <result column="nonce" jdbcType="BIGINT" property="nonce" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    oid, pid, price, quantity, delivery, total, telephone, `time`, address, category, `status`, 
+    p_name, p_pictrue, buyer_id, buyer_name, seller_id, seller_name, `index`, previousHash, 
+    `timestamp`, `data`, `hash`,nonce
+  </sql>
+  	<select id="countAll" resultType="Integer">
+		select 
+		count(*)
+		from blockchain
+	</select>
+	<select id="selectAlluesPage" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List"></include>
+		from blockchain
+		order by `index` desc
+		limit ${page},${limit}
+	</select>
+  	<select id="countByMany" resultType="INTEGER">
+		select
+		count(*)
+		from weibao.blockchain
+		where 1=1
+		<if test="p_name!=null and p_name!=''">
+			and p_name LIKE '%${p_name}%'
+		</if>
+		<if test="oid!=null and oid!=''">
+			or oid ='${oid}'
+		</if>
+		<if test="start_time!=null and start_time!=''">
+			and time &gt; '${start_time}'
+		</if>
+		<if test="end_time!=null and end_time!=''">
+			and time &lt; '${end_time}'
+		</if>
+		<if test="status!=null and status!=''">
+			and status='${status}'
+		</if>
+		<if test="seller_name!=null and seller_name!=''">
+			and seller_name LIKE '%${seller_name}%'
+		</if>
+	</select>
+	<select id="selectByMany" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from weibao.blockchain
+		where 1=1
+		<if test="p_name!=null and p_name!=''">
+			and p_name LIKE '%${p_name}%'
+		</if>
+		<if test="oid!=null and oid!=''">
+			or oid ='${oid}'
+		</if>
+		<if test="start_time!=null and start_time!=''">
+			and time &gt; '${start_time}'
+		</if>
+		<if test="end_time!=null and end_time!=''">
+			and time &lt; '${end_time}'
+		</if>
+		<if test="status!=null and status!=''">
+			and status='${status}'
+		</if>
+		<if test="seller_name!=null and seller_name!=''">
+			and seller_name LIKE '%${seller_name}%'
+		</if>
+		limit ${page},${limit}
+	</select>
+  <select id="countAll" resultType="Integer">
+  	select 
+    count(*)
+  	from blockchain
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select 
+		*
+  	from blockchain
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from blockchain
+    where oid = #{oid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from blockchain
+    where oid = #{oid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yt.entity.Blockchain">
+    insert into blockchain (oid, pid, price, 
+      quantity, delivery, total, 
+      telephone, `time`, address, 
+      category, `status`, p_name, 
+      p_pictrue, buyer_id, buyer_name, 
+      seller_id, seller_name, `index`, 
+      previousHash, `timestamp`, `data`, 
+      `hash`, nonce)
+    values (#{oid,jdbcType=VARCHAR}, #{pid,jdbcType=INTEGER}, #{price,jdbcType=VARCHAR}, 
+      #{quantity,jdbcType=VARCHAR}, #{delivery,jdbcType=VARCHAR}, #{total,jdbcType=VARCHAR}, 
+      #{telephone,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{address,jdbcType=VARCHAR}, 
+      #{category,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{p_name,jdbcType=VARCHAR}, 
+      #{p_pictrue,jdbcType=VARCHAR}, #{buyer_id,jdbcType=INTEGER}, #{buyer_name,jdbcType=VARCHAR}, 
+      #{seller_id,jdbcType=INTEGER}, #{seller_name,jdbcType=VARCHAR}, #{index,jdbcType=INTEGER}, 
+      #{previousHash,jdbcType=VARCHAR}, #{timestamp,jdbcType=BIGINT}, #{data,jdbcType=VARCHAR}, 
+      #{hash,jdbcType=VARCHAR}, #{nonce,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yt.entity.Blockchain">
+    insert into blockchain
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
+        oid,
+      </if>
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="quantity != null">
+        quantity,
+      </if>
+      <if test="delivery != null">
+        delivery,
+      </if>
+      <if test="total != null">
+        total,
+      </if>
+      <if test="telephone != null">
+        telephone,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="category != null">
+        category,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="p_name != null">
+        p_name,
+      </if>
+      <if test="p_pictrue != null">
+        p_pictrue,
+      </if>
+      <if test="buyer_id != null">
+        buyer_id,
+      </if>
+      <if test="buyer_name != null">
+        buyer_name,
+      </if>
+      <if test="seller_id != null">
+        seller_id,
+      </if>
+      <if test="seller_name != null">
+        seller_name,
+      </if>
+      <if test="index != null">
+        index,
+      </if>
+      <if test="previousHash != null">
+        previousHash,
+      </if>
+      <if test="timestamp != null">
+        timestamp,
+      </if>
+      <if test="data != null">
+        data,
+      </if>
+      <if test="hash != null">
+        hash,
+      </if>
+      <if test="nonce != null">
+        nonce,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="oid != null">
+        #{oid,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null">
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null">
+        #{quantity,jdbcType=VARCHAR},
+      </if>
+      <if test="delivery != null">
+        #{delivery,jdbcType=VARCHAR},
+      </if>
+      <if test="total != null">
+        #{total,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+        #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="p_name != null">
+        #{p_name,jdbcType=VARCHAR},
+      </if>
+      <if test="p_pictrue != null">
+        #{p_pictrue,jdbcType=VARCHAR},
+      </if>
+      <if test="buyer_id != null">
+        #{buyer_id,jdbcType=INTEGER},
+      </if>
+      <if test="buyer_name != null">
+        #{buyer_name,jdbcType=VARCHAR},
+      </if>
+      <if test="seller_id != null">
+        #{seller_id,jdbcType=INTEGER},
+      </if>
+      <if test="seller_name != null">
+        #{seller_name,jdbcType=VARCHAR},
+      </if>
+      <if test="index != null">
+        #{index,jdbcType=INTEGER},
+      </if>
+      <if test="previousHash != null">
+        #{previousHash,jdbcType=VARCHAR},
+      </if>
+      <if test="timestamp != null">
+        #{timestamp,jdbcType=BIGINT},
+      </if>
+      <if test="data != null">
+        #{data,jdbcType=VARCHAR},
+      </if>
+      <if test="hash != null">
+        #{hash,jdbcType=VARCHAR},
+      </if>
+      <if test="nonce != null">
+        #{nonce,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yt.entity.Blockchain">
+    update blockchain
+    <set>
+      <if test="pid != null">
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null">
+        quantity = #{quantity,jdbcType=VARCHAR},
+      </if>
+      <if test="delivery != null">
+        delivery = #{delivery,jdbcType=VARCHAR},
+      </if>
+      <if test="total != null">
+        total = #{total,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+        category = #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="p_name != null">
+        p_name = #{p_name,jdbcType=VARCHAR},
+      </if>
+      <if test="p_pictrue != null">
+        p_pictrue = #{p_pictrue,jdbcType=VARCHAR},
+      </if>
+      <if test="buyer_id != null">
+        buyer_id = #{buyer_id,jdbcType=INTEGER},
+      </if>
+      <if test="buyer_name != null">
+        buyer_name = #{buyer_name,jdbcType=VARCHAR},
+      </if>
+      <if test="seller_id != null">
+        seller_id = #{seller_id,jdbcType=INTEGER},
+      </if>
+      <if test="seller_name != null">
+        seller_name = #{seller_name,jdbcType=VARCHAR},
+      </if>
+      <if test="index != null">
+        index = #{index,jdbcType=INTEGER},
+      </if>
+      <if test="previousHash != null">
+        previousHash = #{previousHash,jdbcType=VARCHAR},
+      </if>
+      <if test="timestamp != null">
+        timestamp = #{timestamp,jdbcType=BIGINT},
+      </if>
+      <if test="data != null">
+        data = #{data,jdbcType=VARCHAR},
+      </if>
+      <if test="hash != null">
+        hash = #{hash,jdbcType=VARCHAR},
+      </if>
+      <if test="nonce != null">
+        nonce = #{nonce,jdbcType=BIGINT},
+      </if>
+    </set>
+    where oid = #{oid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yt.entity.Blockchain">
+    update blockchain
+    set pid = #{pid,jdbcType=INTEGER},
+      price = #{price,jdbcType=VARCHAR},
+      quantity = #{quantity,jdbcType=VARCHAR},
+      delivery = #{delivery,jdbcType=VARCHAR},
+      total = #{total,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP},
+      address = #{address,jdbcType=VARCHAR},
+      category = #{category,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      p_name = #{p_name,jdbcType=VARCHAR},
+      p_pictrue = #{p_pictrue,jdbcType=VARCHAR},
+      buyer_id = #{buyer_id,jdbcType=INTEGER},
+      buyer_name = #{buyer_name,jdbcType=VARCHAR},
+      seller_id = #{seller_id,jdbcType=INTEGER},
+      seller_name = #{seller_name,jdbcType=VARCHAR},
+      index = #{index,jdbcType=INTEGER},
+      previousHash = #{previousHash,jdbcType=VARCHAR},
+      timestamp = #{timestamp,jdbcType=BIGINT},
+      data = #{data,jdbcType=VARCHAR},
+      hash = #{hash,jdbcType=VARCHAR},
+      nonce = #{nonce,jdbcType=BIGINT}
+    where oid = #{oid,jdbcType=VARCHAR}
+  </update>
+</mapper>

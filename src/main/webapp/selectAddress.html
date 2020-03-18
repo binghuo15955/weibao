@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Shoppers &mdash; Colorlib e-Commerce Template</title>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Mukta:300,400,700">
+<link rel="stylesheet" href="fonts/icomoon/style.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/magnific-popup.css">
+<link rel="stylesheet" href="css/jquery-ui.css">
+<link rel="stylesheet" href="css/owl.carousel.min.css">
+<link rel="stylesheet" href="css/owl.theme.default.min.css">
+<link rel="stylesheet" href="./lib/layui/css/layui.css">
+<link rel="stylesheet" href="css/aos.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/selectAddress.css">
+
+</head>
+<body>
+	<div style="padding-left:10px">
+		<fieldset class="layui-elem-field site-demo-button"
+			style="margin-top: 30px;">
+			<legend>选择收货地址</legend>
+			<div class="layui-card-body layui-table-body layui-table-main">
+				<table class="layui-table layui-form" id="showAddress"
+					lay-filter="address"></table>
+			</div>
+		</fieldset>
+	</div>
+
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/jquery-ui.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/owl.carousel.min.js"></script>
+	<script src="js/jquery.magnific-popup.min.js"></script>
+	<script src="js/aos.js"></script>
+	<script src="./lib/layui/layui.js"></script>
+	<script src="js/checkout.js"></script>
+	<script src="js/main.js"></script>
+<script type="text/javascript" src="./js/xadmin.js"></script>
+<script type="text/javascript" src="./js/xcity.js"></script>
+	<script>
+		layui
+				.use(
+						[ 'laydate', 'form', 'table', 'jquery', 'laypage',
+								'layer' ],
+						function() {
+							var laydate = layui.laydate;
+							var form = layui.form;
+							var table = layui.table;
+							var $ = layui.jquery;
+							var laypage = layui.laypage, layer = layui.layer
+
+							table
+									.on(
+											'tool',
+											function(obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+												var data = obj.data; //获得当前行数据
+												var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+												var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+												console
+														.log("选择的行id:",
+																data.aid)
+												if (layEvent === 'del') { //删除
+													parent.layer
+															.confirm(
+																	'确认删除吗？',
+																	function(
+																			index) {
+																		obj
+																				.del(); //删除对应行（tr）的DOM结构，并更新缓存
+																		layer
+																				.close(index);
+																		//向服务端发送删除指令
+																		$
+																				.ajax({
+																					url : "/weibao/address/del",
+																					type : 'post',//method请求方式，get或者post
+																					data : data,
+																					dataType : "text",
+																					async : false,
+																					success : function(
+																							data) {//res为相应体,function为回调函数
+																						if (data == "success") {
+																							parent.layer
+																									.msg(
+																											'已删除!',
+																											{
+																												icon : 1,
+																												time : 1000
+																											});
+																						} else {
+																							parent.layer
+																									.alert(
+																											data.msg,
+																											{
+																												icon : 5
+																											});
+																							console
+																									.log("failed")
+																						}
+																					},
+																					error : function(
+																							error) {
+																						console
+																								.log(error)
+																						parent.layer
+																								.alert(
+																										'操作失败！！！',
+																										{
+																											icon : 5
+																										});
+																					}
+																				});
+																	});
+												}else if(layEvent ==='set_receiveAddr'){//选择收货地址
+													addr=data.address+"-"+data.detail
+													console.log(data.address+"-"+data.detail)
+													parent.return_selectedAddr(data.receive_name,data.telephone,addr)
+													var index = parent.layer.getFrameIndex(window.name);
+													parent.layer.close(index);
+												}
+											});
+
+							//监听单元格编辑
+							table.on('edit', function(obj) {
+								var value = obj.value //得到修改后的值
+								, data = obj.data //得到所在行所有键值
+								, field = obj.field; //得到字段
+								$.ajax({
+									url : "/weibao/address/update",
+									data : {
+										"id" : data.aid,
+										"key" : field,
+										"value" : value
+									},
+									type : "post",
+									async : false,
+									success : function(res) {
+										if (res == "success") {
+											parent.layer.msg("修改成功", {
+												icon : 1
+											})
+										} else {
+											parent.layer.msg("修改失败,请重试", {
+												icon : 5
+											})
+										}
+									},
+									error : function(res) {
+										parent.layer.msg("修改失败,请重试", {
+											icon : 5
+										})
+									}
+
+								})
+								// layer.msg('[ID: '+ data.aid +'] ' + field + ' 字段更改为：'+ value);
+							});
+
+							table.render({
+								elem : "#showAddress",
+								url : '/weibao/address/getall',
+								cellMinWidth : 90,
+								height : 'full-10',
+								id : "address",
+								cols : [ [ {
+									field : 'receive_name',
+									title : '收货人',
+									fixed : 'left',
+									edit : "text",
+									width : 150
+								}, {
+									field : 'aid',
+									hide : true
+								}, {
+									field : 'address',
+									title : '所在地区',
+									width : 200
+								}, {
+									field : 'detail',
+									title : '详细地址',
+									edit : "text",
+									width : 250
+								}, {
+									field : 'postcode',
+									title : '邮编',
+									edit : "text"
+								}, {
+									field : 'telephone',
+									title : '电话/手机',
+									edit : "text"
+								}, {
+									title : '操作',
+									toolbar : '#barDemo',
+									width : 75
+								},  {
+									field : 'select_address',
+									templet : '#select_address',
+									title : '选择地址',
+									width:100	
+								} ] ],
+								parseData : function(res) { //res 即为原始返回的数据
+									return {
+										"code" : res.status, //解析接口状态
+										"msg" : res.message, //解析提示文本
+										//"count" : res.total, //解析数据长度
+										"data" : res.data, //解析数据列表
+									};
+								},
+								done : function(res, curr, count) {
+									console.log(res);
+									//得到当前页码
+									console.log(curr);
+									//得到数据总量
+									//console.log(count);
+								}
+							})
+
+							//layui表格重载：点击查询的时候触发、条件搜索
+							form
+									.on(
+											'submit(add)',
+											function(data) {
+												var param = data.field;
+												console.log("发送到server端的数据:",
+														JSON.stringify(param))
+												$
+														.ajax({
+															url : "/weibao/address/add",
+															type : "post",
+															async : false,
+															data : param,
+															success : function(
+																	res) {
+																console
+																		.log("添加一条address")
+																if (res == "success") {
+																	parent.layer
+																			.msg(
+																					"添加成功",
+																					{
+																						icon : 1,
+																						time : 1000
+																					})
+																	table
+																			.reload(
+																					'address',
+																					{
+																						method : 'post',
+																						contentType : "application/x-www-form-urlencoded;charset=utf-8",
+																						url : '/weibao/address/getall'
+																					});
+																} else {
+																	parent.layer
+																			.msg(
+																					"添加失败,请重试！",
+																					{
+																						icon : 5
+																					})
+																}
+															},
+															error : function() {
+																parent.layer
+																		.msg(
+																				"添加失败,请重试！",
+																				{
+																					icon : 5
+																				})
+															}
+														})
+											})
+
+							form.verify({
+								required : function(value, item) { //value：表单的值、item：表单的DOM对象
+									console.log(value)
+									if (value == null || "" == value) {
+										parent.layer.msg("必填项不能为空", {
+											icon : 5
+										})
+										return "必填项不能为空";
+									}
+								},
+							})
+
+						});
+
+		function change(obj) {
+			console.log("-->onclick")
+			console.log(obj)
+			$('.layui-btn layui-btn-disabled').attr(
+					"layui-btn layui-btn-danger")
+			obj.attr("class", "layui-btn layui-btn-disabled")
+		}
+	</script>
+	<script>
+		layui.use([ 'form', 'code' ], function() {
+			form = layui.form;
+			layui.code();
+
+			$('#start').xcity();
+
+		});
+	</script>
+	<script type="text/html" id="barDemo">
+		  <a href="javascript:(0)" title="删除" lay-event="del"><i class="layui-icon">&#xe640;</i></a>
+	</script>
+	<script type="text/html" id="select_address">
+ 		<a href="javascript:(0)" title="选择收货地址" lay-event="set_receiveAddr"><button class="layui-btn layui-btn-normal">选择</button></a>
+	</script>
+</body>
+</html>

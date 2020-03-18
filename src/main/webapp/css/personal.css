@@ -1,0 +1,27 @@
+#header {
+	font-size: 19px;
+	background: aliceblue;
+	padding: 6px;
+}
+
+.wider-input {
+	width: 591px;
+}
+
+div {
+	margin-bottom: 14px;
+}
+
+#start {
+	margin-bottom: 0px;
+}
+
+button {
+	margin-top: 21px;
+}
+
+#sexdiv {
+	margin-left: 13px;
+	line-height: 44px;
+	font-size: 15px;
+}

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yt.mapper.AddressMapper">
+  <resultMap id="BaseResultMap" type="com.yt.entity.Address">
+    <id column="aid" jdbcType="INTEGER" property="aid" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="detail" jdbcType="VARCHAR" property="detail" />
+    <result column="postcode" jdbcType="VARCHAR" property="postcode" />
+    <result column="receive_name" jdbcType="VARCHAR" property="receive_name" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="is_default" jdbcType="VARCHAR" property="is_default" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    aid, uid, address, detail, postcode, receive_name, telephone, is_default
+  </sql>
+  <select id="get_default" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List" />  
+  	from address
+  	where uid=${uid} and is_default="1"
+  </select>
+  <update id="cancel_alldefault">
+  	update address
+  	<set>
+  		is_default="0"
+  	</set>
+  	where 
+  	uid=${uid}
+  </update>
+  <update id="set_default">
+  	update address
+  	<set>
+  		is_default="1"
+  	</set>
+  	where
+  	aid=${aid}
+  </update>
+  <select id="selectAllByUid" resultMap="BaseResultMap">
+	select
+	<include refid="Base_Column_List" />
+	from address
+	where uid=${uid}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from address
+    where aid = #{aid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from address
+    where aid = #{aid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yt.entity.Address">
+    insert into address (aid, uid, address, 
+      detail, postcode, receive_name, 
+      telephone, is_default)
+    values (#{aid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, 
+      #{detail,jdbcType=VARCHAR}, #{postcode,jdbcType=VARCHAR}, #{receive_name,jdbcType=VARCHAR}, 
+      #{telephone,jdbcType=VARCHAR}, #{is_default,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yt.entity.Address">
+    insert into address
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="aid != null">
+        aid,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="detail != null">
+        detail,
+      </if>
+      <if test="postcode != null">
+        postcode,
+      </if>
+      <if test="receive_name != null">
+        receive_name,
+      </if>
+      <if test="telephone != null">
+        telephone,
+      </if>
+      <if test="is_default != null">
+        is_default,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="aid != null">
+        #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null">
+        #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="postcode != null">
+        #{postcode,jdbcType=VARCHAR},
+      </if>
+      <if test="receive_name != null">
+        #{receive_name,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="is_default != null">
+        #{is_default,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yt.entity.Address">
+    update address
+    <set>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null">
+        detail = #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="postcode != null">
+        postcode = #{postcode,jdbcType=VARCHAR},
+      </if>
+      <if test="receive_name != null">
+        receive_name = #{receive_name,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="is_default != null">
+        is_default = #{is_default,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where aid = #{aid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yt.entity.Address">
+    update address
+    set uid = #{uid,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      detail = #{detail,jdbcType=VARCHAR},
+      postcode = #{postcode,jdbcType=VARCHAR},
+      receive_name = #{receive_name,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      is_default = #{is_default,jdbcType=VARCHAR}
+    where aid = #{aid,jdbcType=INTEGER}
+  </update>
+</mapper>
