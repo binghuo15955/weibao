@@ -58,7 +58,10 @@ public class DictionaryServiceImpl {
 	}
 	
 	public List<Dictionary> getByMany(String classification,String item,String value,String editable,String page1,String limit){
-		String page = String.valueOf((Integer.parseInt(page1)-1)*Integer.parseInt(limit));
+		String page = null;
+		if(page1!=null&&limit!=null&&!"".equals(page1)&&!"".equals(limit)) {
+			page = String.valueOf((Integer.parseInt(page1)-1)*Integer.parseInt(limit));
+		}		
 		return dictionaryMapper.selectByMany(classification,item,value,editable,page,limit);
 	}
 

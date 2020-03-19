@@ -79,32 +79,32 @@
 						<a href="index.jsp">首页</a>
 						<li class="has-children"><a href="javascript:(0)">分类</a>
 							<ul class="dropdown">
-								<li><a href="shop.jsp?kw=phone">手机数码</a></li>
-								<li><a href="shop.jsp?kw=daily">生活百货</a></li>
-								<li><a href="shop.jsp?kw=womanshirt">女装</a></li>
-								<li><a href="shop.jsp?kw=womanshoes">女鞋</a></li>
-								<li><a href="shop.jsp?kw=makeup">美妆</a></li>
-								<li><a href="shop.jsp?kw=manshirt">男装</a></li>
-								<li><a href="shop.jsp?kw=manshoes">男鞋</a></li>
-								<li><a href="shop.jsp?kw=electrical">家用电器</a></li>
-								<li><a href="shop.jsp?kw=outdoor">运动户外</a></li>
-								<li><a href="shop.jsp?kw=furniture">家具/饰品</a></li>
-								<li><a href="shop.jsp?kw=car">整车/车品</a></li>
-								<li><a href="shop.jsp?kw=game">游戏装备</a></li>
-								<li><a href="shop.jsp?kw=pet">宠物用品</a></li>
-								<li><a href="shop.jsp?kw=instrument">乐器</a></li>
-								<li><a href="shop.jsp?kw=card">卡券交易</a></li>
-								<li><a href="shop.jsp?kw=book">书籍交易</a></li>
+								<li><a href="shop.jsp?kw=手机数码">手机数码</a></li>
+								<li><a href="shop.jsp?kw=生活百货">生活百货</a></li>
+								<li><a href="shop.jsp?kw=女装">女装</a></li>
+								<li><a href="shop.jsp?kw=女鞋">女鞋</a></li>
+								<li><a href="shop.jsp?kw=美妆<">美妆</a></li>
+								<li><a href="shop.jsp?kw=男装">男装</a></li>
+								<li><a href="shop.jsp?kw=男鞋">男鞋</a></li>
+								<li><a href="shop.jsp?kw=家用电器">家用电器</a></li>
+								<li><a href="shop.jsp?kw=运动户外">运动户外</a></li>
+								<li><a href="shop.jsp?kw=家具/饰品">家具/饰品</a></li>
+								<li><a href="shop.jsp?kw=整车/车品">整车/车品</a></li>
+								<li><a href="shop.jsp?kw=游戏装备">游戏装备</a></li>
+								<li><a href="shop.jsp?kw=宠物用品">宠物用品</a></li>
+								<li><a href="shop.jsp?kw=乐器">乐器</a></li>
+								<li><a href="shop.jsp?kw=卡券交易">卡券交易</a></li>
+								<li><a href="shop.jsp?kw=书籍交易">书籍交易</a></li>
 							</ul></li>
 						<li><a href="shop.jsp">附近</a></li>
 						<li class="has-children"><a href="javascript:(0)">技能服务/跑腿</a>
 							<ul class="dropdown">
-								<li><a href="shop.jsp?kw=free">闲置出租</a></li>
-								<li><a href="shop.jsp?kw=delivery">快递代拿</a></li>
-								<li><a href="shop.jsp?kw=computer">PPT/PS/PR等</a></li>
-								<li><a href="shop.jsp?kw=job">兼职</a></li>
-								<li><a href="shop.jsp?kw=carsharing">校园拼车</a></li>
-								<li><a href="shop.jsp?kw=others">其他</a></li>
+								<li><a href="shop.jsp?kw=闲置出租">闲置出租</a></li>
+								<li><a href="shop.jsp?kw=快递代拿">快递代拿</a></li>
+								<li><a href="shop.jsp?kw=PPT/PS/PR等">PPT/PS/PR等</a></li>
+								<li><a href="shop.jsp?kw=兼职">兼职</a></li>
+								<li><a href="shop.jsp?kw=校园拼车">校园拼车</a></li>
+								<li><a href="shop.jsp?kw=其他">其他</a></li>
 							</ul></li>
 						<li><a href="contact.jsp">联系我们</a></li>
 						<li><a href="about.jsp">关于我们</a></li>

@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>个人中心</title>
+		<title>关于WEIBAO</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -16,7 +17,10 @@
 		<link rel="stylesheet" href="css/jquery-ui.css">
 		<link rel="stylesheet" href="css/owl.carousel.min.css">
 		<link rel="stylesheet" href="css/owl.theme.default.min.css">
+
+
 		<link rel="stylesheet" href="css/aos.css">
+
 		<link rel="stylesheet" href="css/style.css">
 
 	</head>
@@ -24,19 +28,24 @@
 
 		<div class="site-wrap">
 			<header class="site-navbar" role="banner">
-				<div class="site-navbar-top">
-					<div class="container">
-						<div class="row align-items-center">
+			<div class="site-navbar-top">
+				<div class="container">
+					<div class="row align-items-center">
 
-							<div class="col-6 col-md-4 order-2 order-md-1 site-search-icon text-left">
+						<div
+							class="col-6 col-md-4 order-2 order-md-1 site-search-icon text-left">
+							<form action="" class="site-block-top-search">
+								<span class="icon icon-search2"></span> <input type="text"
+									class="form-control border-0" placeholder="Search">
+							</form>
+						</div>
 
+						<div
+							class="col-12 mb-3 mb-md-0 col-md-4 order-1 order-md-2 text-center">
+							<div class="site-logo">
+								<a href="index.jsp" class="js-logo-clone">weibao搜</a>
 							</div>
-
-							<div class="col-12 mb-3 mb-md-0 col-md-4 order-1 order-md-2 text-center">
-								<div class="site-logo">
-									<a href="index.jsp" class="js-logo-clone">weibao搜</a>
-								</div>
-							</div>
+						</div>
 
 						<div class="col-6 col-md-4 order-3 order-md-3 text-right">
 							<c:choose>
@@ -59,8 +68,8 @@
 														onclick="xadmin.open('我的订单','record.jsp','','')">我的订单</a></li>
 													<li><a href="javascript:(0)" onclick="exit()">退出</a></li>
 												</ul></li>&emsp;
-											<li><a
-												href="favorite.jsp?name=<%=session.getAttribute("name")%>"><span
+											<li><a href="javascript:(0)"
+												onclick="xadmin.open('我的收藏','favorite.jsp?name=<%=session.getAttribute("name")%>','1000','',false)"><span
 													class="icon icon-heart-o" title="我的收藏"></span></a></li>
 										</ul>
 									</div>
@@ -69,7 +78,8 @@
 									<div class="site-top-icons">
 										<ul>
 											<li><a href="javascript:(0)"
-												onclick="xadmin.open('登陆窗口','login_layer.jsp','','',true)">登录</a></li> &emsp;
+												onclick="xadmin.open('登陆窗口','login_layer.jsp','','',true)">登录</a></li>
+											&emsp;
 											<li><a href="javascript:(0)"
 												onclick="xadmin.open('注册','register.html','','',true)">注册</a></li>
 										</ul>
@@ -78,10 +88,10 @@
 							</c:choose>
 						</div>
 
-						</div>
 					</div>
 				</div>
-				<nav class="site-navigation text-right text-md-center"
+			</div>
+			<nav class="site-navigation text-right text-md-center"
 				role="navigation">
 				<div class="container">
 					<ul class="site-menu js-clone-nav d-none d-md-block">
@@ -115,59 +125,103 @@
 								<li><a href="shop.jsp?kw=校园拼车">校园拼车</a></li>
 								<li><a href="shop.jsp?kw=其他">其他</a></li>
 							</ul></li>
-						<li><a href="contact.jsp">联系我们</a></li>
-						<li><a href="about.jsp">关于我们</a></li>
+						<li><a href="contact.html">联系我们</a></li>
+						<li><a href="about.html">关于我们</a></li>
 					</ul>
 				</div>
 			</nav>
-			</header>
+		</header>
 
 			<div class="bg-light py-3">
 				<div class="container">
 					<div class="row">
-						<div class="col-md-12 mb-0"><a href="index.jsp">首页</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">个人中心</strong>	
-						</div>
+						<div class="col-md-12 mb-0"><a href="index.jsp">首页</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">关于我们</strong></div>
 					</div>
 				</div>
 			</div>
 
-			<div class="site-section">
+			<div class="site-section border-bottom" data-aos="fade">
 				<div class="container">
 					<div class="row mb-5">
-						<div class="col-md-9 order-2">
+						<div class="col-md-6">
+							<div class="block-16">
+								<figure>
+									<img src="images/blog_1.jpg" alt="Image placeholder" class="img-fluid rounded">
+									<a href="https://vimeo.com/channels/staffpicks/93951774" class="play-button popup-vimeo"><span class="ion-md-play"></span></a>
 
-							<div class="row">
-								<div class="layui-tab-content">
-								    <div class="layui-tab-item layui-show">
-								        <iframe src='personal.jsp' frameborder="0" scrolling="yes" class="x-iframe" style="width: 1000px;height: 1500px;"></iframe>
-								    </div>
-								</div>
+								</figure>
 							</div>
-							
 						</div>
+						<div class="col-md-1"></div>
+						<div class="col-md-5">
 
-						<div class="col-md-3 order-1 mb-5 mb-md-0">
-							<div class="border p-4 rounded mb-4">
-								<h3 class="mb-3 h6 text-uppercase text-black d-block">账号管理</h3>
-								<ul class="list-unstyled mb-0"><!-- 获取该分类的总数 -->
-									<li class="mb-1"><a href="javascript:(0)" class="d-flex" onclick="add_tab('personal.jsp')">个人资料</a></li>
-									<li class="mb-1"><a href="javascript:(0)" class="d-flex" onclick="add_tab('mypost.jsp')">我的发布</a></li>
-									<li class="mb-1"><a href="javascript:(0)" class="d-flex" onclick="add_tab('edit_password.jsp')">修改密码</a></li>
-									<li class="mb-1"><a href="javascript:(0)" class="d-flex" onclick="add_tab('history.jsp')">我的足迹</a></li>
-									<li class="mb-1"><a href="javascript:(0)" class="d-flex" onclick="add_tab('favorite.jsp')">我的收藏</a></li>
-									<li class="mb-1"><a href="javascript:(0)" class="d-flex" onclick="add_tab('address.jsp')">收货地址</a></li>
-								</ul>
+
+							<div class="site-section-heading pt-3 mb-4">
+								<h2 class="text-black">How We Started</h2>
+							</div>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius repellat, dicta at laboriosam, nemo
+								exercitationem itaque eveniet architecto cumque, deleniti commodi molestias repellendus quos sequi hic fugiat
+								asperiores illum. Atque, in, fuga excepturi corrupti error corporis aliquam unde nostrum quas.</p>
+							<p>Accusantium dolor ratione maiores est deleniti nihil? Dignissimos est, sunt nulla illum autem in, quibusdam
+								cumque recusandae, laudantium minima repellendus.</p>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="site-section border-bottom" data-aos="fade">
+				<div class="container">
+					<div class="row justify-content-center mb-5">
+						<div class="col-md-7 site-section-heading text-center pt-4">
+							<h2>我 们 的 优 势</h2>
+						</div>
+					</div>
+					<div class="row">
+						<div class="site-section site-section-sm site-blocks-1">
+							<div class="container">
+								<div class="row">
+									<div class="col-md-6 col-lg-4 d-lg-flex mb-4 mb-lg-0 pl-4" data-aos="fade-up" data-aos-delay="">
+										<div class="icon mr-4 align-self-start">
+											<span class="icon-truck"></span>
+										</div>
+										<div class="text">
+											<h2 class="text-uppercase">信任问题<br>Trust</h2>
+											<p>我们向您承诺，所有的用户都是经过实名认证的，我们能保证您的交易过程一定安全，并且保障您的一切权益。</p>
+										</div>
+									</div>
+									<div class="col-md-6 col-lg-4 d-lg-flex mb-4 mb-lg-0 pl-4" data-aos="fade-up" data-aos-delay="100">
+										<div class="icon mr-4 align-self-start">
+											<span class="icon-refresh2"></span>
+										</div>
+										<div class="text">
+											<h2 class="text-uppercase">交易过程<br>transaction</h2>
+											<p>使用我们，不用担心你的商品内容被刷新掉，从而避免您频繁的回复每个顾客商品信息</p>
+										</div>
+									</div>
+									<div class="col-md-6 col-lg-4 d-lg-flex mb-4 mb-lg-0 pl-4" data-aos="fade-up" data-aos-delay="200">
+										<div class="icon mr-4 align-self-start">
+											<span class="icon-help"></span>
+										</div>
+										<div class="text">
+											<h2 class="text-uppercase">浏览量<br>browse volume</h2>
+											<p>我们比QQ群的浏览量高，我们只专注于校园附近范围，所以您的信息优先级将会大大提高，从而大幅度提高曝光率和交易可能。</p>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 
+
+			<div class="col-md-12" style="text-align: center;">
+				<a href="#">回到顶部</a>
+			</div>
 
 		</div>
 
-		<script type="text/javascript" src="./lib/layui/layui.js"></script>
-		<script type="text/javascript" src="./js/xadmin.js"></script>
 		<script src="js/jquery-3.3.1.min.js"></script>
 		<script src="js/jquery-ui.js"></script>
 		<script src="js/popper.min.js"></script>
@@ -175,7 +229,8 @@
 		<script src="js/owl.carousel.min.js"></script>
 		<script src="js/jquery.magnific-popup.min.js"></script>
 		<script src="js/aos.js"></script>
+
 		<script src="js/main.js"></script>
-		<script src="js/user.js"></script>
+
 	</body>
 </html>

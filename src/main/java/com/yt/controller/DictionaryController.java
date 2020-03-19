@@ -63,6 +63,15 @@ public class DictionaryController {
 	@ResponseBody
 	public void getbymany(String classification, String item, String value, String editable, String page, String limit,
 			HttpServletResponse response, ModelMap model) {
+		if(classification.equals("init")) {
+			List<Dictionary> product_classification = dictionaryService.getByMany("商品分类", item, value, editable, page,
+					limit);
+			List<Dictionary> skill_classification = dictionaryService.getByMany("技能服务", item, value, editable, page,
+					limit);
+			model.put("product_classification", product_classification);
+			model.put("skill_classification", skill_classification);
+			renderData.render_Data(response, model);
+		}
 		List<Dictionary> dictionaries = dictionaryService.getByMany(classification, item, value, editable, page,
 				limit);
 		int count = dictionaryService.countByMany(classification, item, value, editable);

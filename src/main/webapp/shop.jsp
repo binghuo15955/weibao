@@ -117,8 +117,8 @@
 								<li><a href="shop.jsp?kw=校园拼车">校园拼车</a></li>
 								<li><a href="shop.jsp?kw=其他">其他</a></li>
 							</ul></li>
-						<li><a href="contact.html">联系我们</a></li>
-						<li><a href="about.html">关于我们</a></li>
+						<li><a href="contact.jsp">联系我们</a></li>
+						<li><a href="about.jsp">关于我们</a></li>
 					</ul>
 				</div>
 			</nav>
