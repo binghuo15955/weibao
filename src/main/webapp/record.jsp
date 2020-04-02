@@ -35,6 +35,9 @@
 									lay-filter="name_oid_search">
 									<i class="layui-icon">&#xe615;搜索</i>
 								</button>
+								<button type="button" class="layui-btn" lay-submit lay-filter="re_name_oid_search">
+									<i class="layui-icon">清空所有条件</i>
+								</button>
 								&emsp; <a href="javascript:(0)" onclick="extendSearch()"
 									id="extend">更多搜索条件↓</a>
 							</div>
@@ -83,8 +86,8 @@
 											lay-filter="extend_search">
 											<i class="layui-icon">&#xe615;</i>
 										</button>
-										<button type="button" class="layui-btn">
-											<i class="layui-icon" onclick="clearform()">清空所有条件</i>
+										<button type="button" class="layui-btn" lay-submit lay-filter="reset_extend">
+											<i class="layui-icon">清空所有条件</i>
 										</button>
 									</div>
 								</div>
@@ -128,7 +131,7 @@
 		}
 	}
 	function clearform() {
-		$('#myform')[0].reset();
+		$('#myform')[0].reset(); 
 	}
 </script>
 <script>
@@ -255,10 +258,7 @@
 
 						//layui表格重载：点击查询的时候触发、条件搜索
 						form.render();
-						form
-								.on(
-										'submit(name_oid_search)',
-										function(data) {
+						form.on('submit(name_oid_search)',function(data) {
 											var formData = data.field;
 											console.log("搜索条件：", formData);
 											var pname_oid_search = formData.pname_oid_search, start_time_search = formData.start_time_search, end_time_search = formData.end_time_search, status_search = formData.status_search, seller_name_search = formData.seller_name_search;
@@ -318,7 +318,62 @@
 															});
 											return false;
 										});
-
+						form.on('submit(re_name_oid_search)',function(data) {
+							//var formData = data.field;
+							//console.log("搜索条件：", formData);
+							//var pname_oid_search = formData.pname_oid_search, start_time_search = formData.start_time_search, end_time_search = formData.end_time_search, status_search = formData.status_search, seller_name_search = formData.seller_name_search;
+							$('#myform')[0].reset(); 
+							table
+									.reload(
+											'records',
+											{
+												page : true,
+												limit : 20,
+												limits : [ 10,
+														15, 20,
+														50, 100 ],
+												where : {
+													 "p_name" : "",
+													 "oid" : "",
+													 "start_time" : "",
+													"end_time" : "",
+													"status" : "",
+													"seller_name" : ""
+												},
+												method : 'post',
+												contentType : "application/x-www-form-urlencoded;charset=utf-8",
+												url : '/weibao/order/getbymany'
+											});
+							return false;
+						});
+						form.on('submit(reset_extend)',function(data) {
+							//var formData = data.field;
+							//console.log("搜索条件：", formData);
+							//var pname_oid_search = formData.pname_oid_search, start_time_search = formData.start_time_search, end_time_search = formData.end_time_search, status_search = formData.status_search, seller_name_search = formData.seller_name_search;
+							$('#myform')[0].reset(); 
+							table
+									.reload(
+											'records',
+											{
+												page : true,
+												limit : 20,
+												limits : [ 10,
+														15, 20,
+														50, 100 ],
+												where : {
+													"p_name" : "",
+													"oid" : "",
+													"start_time" : "",
+													"end_time" : "",
+													"status" : "",
+													"seller_name" : ""
+												},
+												method : 'post',
+												contentType : "application/x-www-form-urlencoded;charset=utf-8",
+												url : '/weibao/order/getbymany'
+											});
+							return false;
+						});
 					});
 </script>
 <script type="text/html" id="barDemo">

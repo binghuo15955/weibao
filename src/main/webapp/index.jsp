@@ -169,37 +169,37 @@
 				<div class="row">
 					<div class="col-sm-6 col-md-6 col-lg-4 mb-4 mb-lg-0"
 						data-aos="fade" data-aos-delay="">
-						<a class="block-2-item" href="shop.jsp?kw=">
+						<a class="block-2-item" href="shop.jsp?kw=女装">
 							<figure class="image">
 								<img src="images/women.jpg" alt="" class="img-fluid">
 							</figure>
 							<div class="text">
 								<span class="text-uppercase">美妆/女装/女鞋</span>
-								<h3>女生入口</h3>
+								<h3>女装入口</h3>
 							</div>
 						</a>
 					</div>
 					<div class="col-sm-6 col-md-6 col-lg-4 mb-5 mb-lg-0"
 						data-aos="fade" data-aos-delay="100">
 						<a class="block-2-item" href="shop.jsp?kw=">
-							<figure class="image">
+							<!-- <figure class="image">
 								<img src="images/children.jpg" alt="" class="img-fluid">
 							</figure>
 							<div class="text">
 								<span class="text-uppercase">玩具</span>
 								<h3>小孩入口</h3>
-							</div>
+							</div> -->
 						</a>
 					</div>
 					<div class="col-sm-6 col-md-6 col-lg-4 mb-5 mb-lg-0"
 						data-aos="fade" data-aos-delay="200">
-						<a class="block-2-item" href="shop.jsp?kw=">
+						<a class="block-2-item" href="shop.jsp?kw=男鞋">
 							<figure class="image">
 								<img src="images/men.jpg" alt="" class="img-fluid">
 							</figure>
 							<div class="text">
 								<span class="text-uppercase">男装/男鞋/健身器材</span>
-								<h3>男生入口</h3>
+								<h3>男鞋入口</h3>
 							</div>
 						</a>
 					</div>

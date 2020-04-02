@@ -306,6 +306,13 @@
 								return "必填项不能为空";
 							}
 						},
+						phone:function(value, item) { //value：表单的值、item：表单的DOM对象
+							console.log(value)
+							if(!(/^1[3456789]\d{9}$/.test(value))){ 
+								parent.layer.msg("请填写正确的手机号",{icon:5})		
+						        return "请填写正确的手机号"; 
+						    }
+						}
 					})
 
 				});
